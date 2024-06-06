@@ -6,17 +6,19 @@ import cookieParser from 'cookie-parser';
 dotenv.config();
 import { UserRouter } from './routes/user.js';
 
+
 const app = express();
 app.use(express.json());
 app.use(cors({
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173",
+        "https://fipsignup-client.vercel.app"],
     credentials: true
 }));
 app.use(cookieParser());
 app.use('/auth', UserRouter);
 
 
-mongoose.connect('mongodb://127.0.0.1/authentication')
+mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("Database Connected Successfully"))
     .catch(err => console.error("Database connection error:", err));
 
